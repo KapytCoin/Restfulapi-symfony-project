@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ProductRepository;
+use App\Repository\ProductCategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ProductRepository::class)]
-class Product
+#[ORM\Entity(repositoryClass: ProductCategoryRepository::class)]
+class ProductCategory
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -15,6 +15,9 @@ class Product
 
     #[ORM\Column(length: 255)]
     private string $title;
+
+    #[ORM\Column(length: 255)]
+    private string $slug;
 
     public function getId(): ?int
     {
@@ -29,6 +32,18 @@ class Product
     public function setTitle(string $title): static
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }

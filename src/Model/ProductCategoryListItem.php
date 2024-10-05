@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Model;
+namespace App\Model;
 
 class ProductCategoryListItem
 {
@@ -8,7 +8,7 @@ class ProductCategoryListItem
 
     private string $title;
 
-    private $slug;
+    private string $slug;
 
     public function __construct(int $id, string $title, string $slug)
     {

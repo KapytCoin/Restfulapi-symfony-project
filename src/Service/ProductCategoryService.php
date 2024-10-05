@@ -1,11 +1,11 @@
 <?php
 
-namespace Src\Service;
+namespace App\Service;
 
-use App\Repository\ProductCategoryRepository;
-use Src\Model\ProductCategoryListResponse;
 use App\Entity\ProductCategory;
-use Src\Model\ProductCategoryListItem;
+use App\Model\ProductCategoryListItem;
+use App\Model\ProductCategoryListResponse;
+use App\Repository\ProductCategoryRepository;
 use Doctrine\Common\Collections\Criteria;
 
 class ProductCategoryService

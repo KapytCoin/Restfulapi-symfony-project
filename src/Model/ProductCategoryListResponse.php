@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Model;
+namespace App\Model;
 
 class ProductCategoryListResponse
 {

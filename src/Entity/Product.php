@@ -19,7 +19,7 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
 
     #[ORM\Column(length: 255)]
@@ -43,13 +43,6 @@ class Product
     public function __construct()
     {
         $this->categories = new ArrayCollection();
-    }
-
-    public function setId(int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     public function getId(): ?int

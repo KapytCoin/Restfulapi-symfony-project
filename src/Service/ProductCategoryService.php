@@ -6,7 +6,6 @@ use App\Entity\ProductCategory;
 use App\Model\ProductCategoryListItem;
 use App\Model\ProductCategoryListResponse;
 use App\Repository\ProductCategoryRepository;
-use Doctrine\Common\Collections\Criteria;
 
 class ProductCategoryService
 {
@@ -16,7 +15,7 @@ class ProductCategoryService
 
     public function getCategories(): ProductCategoryListResponse
     {
-        $categories = $this->productCategoryRepository->findBy([], ['title' => Criteria::ASC]);
+        $categories = $this->productCategoryRepository->findAllSortedByTitle();
         $items = array_map(
             fn (ProductCategory $productCategory) => new ProductCategoryListItem(
                 $productCategory->getId(), $productCategory->getTitle(), $productCategory->getSlug()

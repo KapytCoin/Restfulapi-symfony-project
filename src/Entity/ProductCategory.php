@@ -32,13 +32,6 @@ class ProductCategory
         $this->products = new ArrayCollection();
     }
 
-    public function setId(int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
     public function getId(): ?int
     {
         return $this->id;

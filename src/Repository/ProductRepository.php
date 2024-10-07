@@ -22,7 +22,7 @@ class ProductRepository extends ServiceEntityRepository
      */
     public function findProductsByCategoryId(int $id): array
     {
-        $query = $this->em->createQuery('SELECT p FROM App\Entity\Product p WHERE :categoryId MEMBER OF p.categories');
+        $query = $this->getEntityManager()->createQuery('SELECT p FROM App\Entity\Product p WHERE :categoryId MEMBER OF p.categories');
         $query->setParameter("categoryId", $id);
 
         return $query->getResult();

@@ -17,8 +17,7 @@ class ProductService
 
     public function getProductsByCategory(int $categoryId): ProductListResponse
     {
-        $category = $this->productCategoryRepository->find($categoryId);
-        if (null === $category) {
+        if (!$this->productCategoryRepository->existsById($categoryId)) {
             throw new ProductCategoryNotFoundException();
         }
 

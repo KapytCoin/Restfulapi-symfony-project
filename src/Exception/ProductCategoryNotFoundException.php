@@ -3,7 +3,6 @@
 namespace App\Exception;
 
 use RuntimeException;
-use Symfony\Component\HttpFoundation\Response;
 
 class ProductCategoryNotFoundException extends RuntimeException
 {

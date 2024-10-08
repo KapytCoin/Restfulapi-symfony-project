@@ -8,6 +8,11 @@ class ExceptionMapping
     {
     }
 
+    public static function fromCode(int $code): self
+    {
+        return new self($code, true, false);
+    }
+
     public function getCode(): int
     {
         return $this->code;

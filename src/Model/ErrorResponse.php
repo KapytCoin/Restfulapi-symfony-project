@@ -13,8 +13,11 @@ class ErrorResponse
         return $this->message;
     }
 
+    /**
+     * @OA\Property(type="object")
+     */
     public function getDetails(): mixed
     {
-        return $this->message;
+        return $this->details;
     }
 }

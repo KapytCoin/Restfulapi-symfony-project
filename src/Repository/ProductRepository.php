@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Product;
+use App\Exception\ProductNotFoundException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -26,6 +27,16 @@ class ProductRepository extends ServiceEntityRepository
         $query->setParameter("categoryId", $id);
 
         return $query->getResult();
+    }
+
+    public function getById(int $id): Product
+    {
+        $product = $this->find($id);
+        if (null === $product) {
+            throw new ProductNotFoundException();
+        }
+
+        return $product;
     }
     //    /**
     //     * @return Product[] Returns an array of Product objects

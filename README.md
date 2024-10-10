@@ -1,2 +1,2 @@
 # RestfullAPI_Store_Dev
-Independent work
+created according to the guide

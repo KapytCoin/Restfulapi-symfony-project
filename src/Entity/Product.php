@@ -25,23 +25,14 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
-    #[ORM\Column(type: Types::SIMPLE_ARRAY)]
-    private array $authors = [];
-
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $publicationDate = null;
-
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private ?bool $meap = null;
 
     /**
      * @var Collection<int, ProductCategory>
      */
     #[ORM\ManyToMany(targetEntity: ProductCategory::class, inversedBy: 'products')]
     private Collection $categories;
-
-    #[ORM\Column(length: 13)]
-    private ?string $isbn = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
@@ -57,6 +48,9 @@ class Product
      */
     #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'product')]
     private Collection $reviews;
+
+    #[ORM\Column(length: 255)]
+    private ?string $formats = null;
 
     public function __construct()
     {
@@ -106,18 +100,6 @@ class Product
         return $this;
     }
 
-    public function getAuthors(): array
-    {
-        return $this->authors;
-    }
-
-    public function setAuthors(array $authors): static
-    {
-        $this->authors = $authors;
-
-        return $this;
-    }
-
     public function getPublicationDate(): ?\DateTimeInterface
     {
         return $this->publicationDate;
@@ -126,18 +108,6 @@ class Product
     public function setPublicationDate(\DateTimeInterface $publicationDate): static
     {
         $this->publicationDate = $publicationDate;
-
-        return $this;
-    }
-
-    public function isMeap(): ?bool
-    {
-        return $this->meap;
-    }
-
-    public function setMeap(bool $meap): static
-    {
-        $this->meap = $meap;
 
         return $this;
     }
@@ -162,18 +132,6 @@ class Product
     public function removeCategory(ProductCategory $category): static
     {
         $this->categories->removeElement($category);
-
-        return $this;
-    }
-
-    public function getIsbn(): ?string
-    {
-        return $this->isbn;
-    }
-
-    public function setIsbn(string $isbn): static
-    {
-        $this->isbn = $isbn;
 
         return $this;
     }
@@ -246,6 +204,18 @@ class Product
                 $review->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFormats(): ?string
+    {
+        return $this->formats;
+    }
+
+    public function setFormats(string $formats): static
+    {
+        $this->formats = $formats;
 
         return $this;
     }

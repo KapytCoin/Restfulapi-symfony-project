@@ -25,6 +25,12 @@ class ProductFormat
     #[ORM\Column(length: 255)]
     private ?string $comment = null;
 
+    #[ORM\Column]
+    private ?int $discountPercent = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    private ?float $price = null;
+
     /**
      * @var Collection<int, ProductToProductFormat>
      */
@@ -39,6 +45,37 @@ class ProductFormat
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): static
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(float $price): static
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    public function getDiscountPercent(): ?int
+    {
+        return $this->discountPercent;
+    }
+
+    public function setDiscountPercent(int $discountPercent): static
+    {
+        $this->discountPercent = $discountPercent;
+
+        return $this;
     }
 
     public function getTitle(): ?string
@@ -89,7 +126,7 @@ class ProductFormat
     {
         if (!$this->productToProductFormats->contains($productToProductFormat)) {
             $this->productToProductFormats->add($productToProductFormat);
-            $productToProductFormat->setProductFormat($this);
+            $productToProductFormat->setFormat($this);
         }
 
         return $this;
@@ -99,8 +136,8 @@ class ProductFormat
     {
         if ($this->productToProductFormats->removeElement($productToProductFormat)) {
             // set the owning side to null (unless already changed)
-            if ($productToProductFormat->getProductFormat() === $this) {
-                $productToProductFormat->setProductFormat(null);
+            if ($productToProductFormat->getFormat() === $this) {
+                $productToProductFormat->setFormat(null);
             }
         }
 

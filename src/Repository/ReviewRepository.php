@@ -16,6 +16,18 @@ class ReviewRepository extends ServiceEntityRepository
         parent::__construct($registry, Review::class);
     }
 
+    public function countByProductId(int $id): int
+    {
+        return $this->count(['product' => $id]);
+    }
+
+    public function getProductTotalRatingSum(int $id): int
+    {
+        return $this->getEntityManager()->createQuery('SELECT SUM(r.rating) FROM App\Entity\Review r WHERE r.product = :id')
+            ->setParameter('id', $id)
+            ->getSingleScalarResult();
+    } 
+
 //    /**
 //     * @return Review[] Returns an array of Review objects
 //     */

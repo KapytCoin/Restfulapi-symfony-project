@@ -26,7 +26,7 @@ class ProductToProductFormat
 
     #[ORM\ManyToOne(inversedBy: 'productToProductFormats')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?ProductFormat $productFormat = null;
+    private ?ProductFormat $format = null;
 
     public function getId(): ?int
     {
@@ -69,14 +69,14 @@ class ProductToProductFormat
         return $this;
     }
 
-    public function getProductFormat(): ?ProductFormat
+    public function getFormat(): ?ProductFormat
     {
-        return $this->productFormat;
+        return $this->format;
     }
 
-    public function setProductFormat(?ProductFormat $productFormat): static
+    public function setFormat(?ProductFormat $format): static
     {
-        $this->productFormat = $productFormat;
+        $this->format = $format;
 
         return $this;
     }

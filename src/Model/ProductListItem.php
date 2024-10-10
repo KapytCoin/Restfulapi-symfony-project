@@ -12,10 +12,6 @@ class ProductListItem
 
     private string $image;
 
-    private array $authors;
-
-    private bool $meap;
-
     private int $publicationDate;
 
     public function setId(int $id): static
@@ -66,25 +62,6 @@ class ProductListItem
         return $this;
     }
 
-    /**
-     * @return string[]
-     */
-    public function getAuthors(): array
-    {
-        return $this->authors;
-    }
-
-    /**
-     * @param string[] $authors
-     * @return self
-     */
-    public function setAuthors(array $authors): static
-    {
-        $this->authors = $authors;
-
-        return $this;
-    }
-
     public function getPublicationDate(): int
     {
         return $this->publicationDate;
@@ -93,18 +70,6 @@ class ProductListItem
     public function setPublicationDate(int $publicationDate): static
     {
         $this->publicationDate = $publicationDate;
-
-        return $this;
-    }
-
-    public function isMeap(): ?bool
-    {
-        return $this->meap;
-    }
-
-    public function setMeap(bool $meap): static
-    {
-        $this->meap = $meap;
 
         return $this;
     }

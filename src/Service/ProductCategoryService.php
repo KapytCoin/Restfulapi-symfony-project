@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Entity\ProductCategory;
-use App\Model\ProductCategoryListItem;
+use App\Model\ProductCategory as ProductCategoryModel;
 use App\Model\ProductCategoryListResponse;
 use App\Repository\ProductCategoryRepository;
 
@@ -17,7 +17,7 @@ class ProductCategoryService
     {
         $categories = $this->productCategoryRepository->findAllSortedByTitle();
         $items = array_map(
-            fn (ProductCategory $productCategory) => new ProductCategoryListItem(
+            fn (ProductCategory $productCategory) => new ProductCategoryModel(
                 $productCategory->getId(), $productCategory->getTitle(), $productCategory->getSlug()
             ),
             $categories

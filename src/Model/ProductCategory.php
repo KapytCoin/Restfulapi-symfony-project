@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-class ProductCategoryListItem
+class ProductCategory
 {
     private int $id;
 

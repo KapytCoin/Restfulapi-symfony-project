@@ -40,9 +40,29 @@ class Product
     #[ORM\ManyToMany(targetEntity: ProductCategory::class, inversedBy: 'products')]
     private Collection $categories;
 
+    #[ORM\Column(length: 13)]
+    private ?string $isbn = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $description = null;
+
+    /**
+     * @var Collection<int, ProductToProductFormat>
+     */
+    #[ORM\OneToMany(targetEntity: ProductToProductFormat::class, mappedBy: 'product')]
+    private Collection $productToProductFormats;
+
+    /**
+     * @var Collection<int, Review>
+     */
+    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'product')]
+    private Collection $reviews;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->productToProductFormats = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -142,6 +162,90 @@ class Product
     public function removeCategory(ProductCategory $category): static
     {
         $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    public function getIsbn(): ?string
+    {
+        return $this->isbn;
+    }
+
+    public function setIsbn(string $isbn): static
+    {
+        $this->isbn = $isbn;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProductToProductFormat>
+     */
+    public function getProductToProductFormats(): Collection
+    {
+        return $this->productToProductFormats;
+    }
+
+    public function addProductToProductFormat(ProductToProductFormat $productToProductFormat): static
+    {
+        if (!$this->productToProductFormats->contains($productToProductFormat)) {
+            $this->productToProductFormats->add($productToProductFormat);
+            $productToProductFormat->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductToProductFormat(ProductToProductFormat $productToProductFormat): static
+    {
+        if ($this->productToProductFormats->removeElement($productToProductFormat)) {
+            // set the owning side to null (unless already changed)
+            if ($productToProductFormat->getProduct() === $this) {
+                $productToProductFormat->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Review>
+     */
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
+    public function addReview(Review $review): static
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews->add($review);
+            $review->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(Review $review): static
+    {
+        if ($this->reviews->removeElement($review)) {
+            // set the owning side to null (unless already changed)
+            if ($review->getProduct() === $this) {
+                $review->setProduct(null);
+            }
+        }
 
         return $this;
     }

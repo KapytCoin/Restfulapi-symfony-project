@@ -37,16 +37,21 @@ class ProductService
         ));
     }
 
-    public function getProductById(int $id): ProductDetails
+    public function getProductsById(int $id): ProductDetails
     {
         throw new ProductNotFoundException();
     }
 
-    public function getProductsById(int $id): ProductDetails
+    public function getProductById(int $id): ProductDetails
     {
         $product = $this->productRepository->getById($id);
         $reviews = $this->reviewRepository->countByProductId($id);
-        $ratingSum = $this->reviewRepository->getProductTotalRatingSum($id);
+        $rating = 0;
+
+        if ($reviews > 0) {
+            $rating = $this->reviewRepository->getProductTotalRatingSum($id) / $reviews;
+        }
+
         $categories = $product->getCategories()
             ->map(fn (ProductCategory $productCategory) => new ProductCategoryModel(
                 $productCategory->getId(), $productCategory->getTitle(), $productCategory->getSlug()
@@ -58,7 +63,7 @@ class ProductService
             ->setSlug($product->getSlug())
             ->setImage($product->getImage())
             ->setPublicationDate($product->getPublicationDate()->getTimestamp())
-            ->setRating($ratingSum / $reviews)
+            ->setRating($rating)
             ->setReviews($reviews)
             ->setFormats($this->mapFormats($product->getFormats()))
             ->setCategories($categories->toArray());
@@ -73,7 +78,7 @@ class ProductService
             ->setComment($formatJoin->getPrice())
             ->setPrice($formatJoin->getPrice())
             ->setDiscountPercent($formatJoin->getDiscountPercent())
-        );        
+        )->toArray();        
     }
 
     private function map(Product $product): ProductListItem

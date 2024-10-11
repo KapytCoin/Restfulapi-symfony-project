@@ -40,8 +40,8 @@ class Product
     /**
      * @var Collection<int, ProductToProductFormat>
      */
-    #[ORM\OneToMany(targetEntity: ProductToProductFormat::class, mappedBy: 'product')]
-    private Collection $productToProductFormats;
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductToProductFormat::class)]
+    private Collection $formats;
 
     /**
      * @var Collection<int, Review>
@@ -49,14 +49,11 @@ class Product
     #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'product')]
     private Collection $reviews;
 
-    #[ORM\Column(length: 255)]
-    private ?string $formats = null;
-
     public function __construct()
     {
         $this->categories = new ArrayCollection();
-        $this->productToProductFormats = new ArrayCollection();
         $this->reviews = new ArrayCollection();
+        $this->formats = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -149,36 +146,6 @@ class Product
     }
 
     /**
-     * @return Collection<int, ProductToProductFormat>
-     */
-    public function getProductToProductFormats(): Collection
-    {
-        return $this->productToProductFormats;
-    }
-
-    public function addProductToProductFormat(ProductToProductFormat $productToProductFormat): static
-    {
-        if (!$this->productToProductFormats->contains($productToProductFormat)) {
-            $this->productToProductFormats->add($productToProductFormat);
-            $productToProductFormat->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProductToProductFormat(ProductToProductFormat $productToProductFormat): static
-    {
-        if ($this->productToProductFormats->removeElement($productToProductFormat)) {
-            // set the owning side to null (unless already changed)
-            if ($productToProductFormat->getProduct() === $this) {
-                $productToProductFormat->setProduct(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Review>
      */
     public function getReviews(): Collection
@@ -208,12 +175,12 @@ class Product
         return $this;
     }
 
-    public function getFormats(): ?string
+    public function getFormats(): Collection
     {
         return $this->formats;
     }
 
-    public function setFormats(string $formats): static
+    public function setFormats(Collection $formats): static
     {
         $this->formats = $formats;
 

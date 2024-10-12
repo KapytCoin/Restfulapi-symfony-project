@@ -22,6 +22,8 @@ class ProductDetails
 
     private array $formats;
 
+    private array $recommendations;
+
     public function getId(int $id): int
     {
         return $this->id;
@@ -126,6 +128,18 @@ class ProductDetails
     public function setFormats(array $formats): self
     {
         $this->formats = $formats;
+
+        return $this;
+    }
+
+    public function getRecommendations(): array
+    {
+        return $this->recommendations;
+    }
+
+    public function setRecommendations(array $recommendations): self
+    {
+        $this->recommendations = $recommendations;
 
         return $this;
     }

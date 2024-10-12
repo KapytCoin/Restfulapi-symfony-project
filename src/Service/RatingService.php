@@ -10,8 +10,11 @@ class RatingService
     {
     }
 
-    public function calcReviewRatingForProduct(int $id, int $total): float
+    public function calcReviewRatingForProduct(int $id): Rating
     {
-        return $total > 0 ? $this->reviewRepository->getProductTotalRatingSum($id) / $total : 0;
+        $total = $this->reviewRepository->countByProductId($id);
+        $rating = $total > 0 ? $this->reviewRepository->getProductTotalRatingSum($id) / $total : 0;
+
+        return new Rating($total, $rating);
     }
 }

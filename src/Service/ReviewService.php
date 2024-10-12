@@ -28,8 +28,11 @@ class ReviewService
             $rating = $this->reviewRepository->getProductTotalRatingSum($id) / $total;
         }
 
+        $rating = $this->ratingService->calcReviewRatingForProduct($id);
+        $total = $rating->getTotal();
+
         return (new ReviewPage())
-            ->setRating($this->ratingService->calcReviewRatingForProduct($id, $total))
+            ->setRating($rating->getRating())
             ->setTotal($total)
             ->setPage($page)
             ->setPerPage(self::PAGE_LIMIT)

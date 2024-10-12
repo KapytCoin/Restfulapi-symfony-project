@@ -18,17 +18,4 @@ class ProductMapper
         ->setImage($product->getImage())
         ->setPublicationDate($product->getPublicationDate()->getTimestamp());
     }
-
-    public static function mapRecommended(Product $product): RecommendedProduct
-    {
-        $description = $product->getDescription();
-        $description = strlen($description) > 150 ? substr($description, 0, 150). '...' : $description;
-
-        return (new RecommendedProduct())
-            ->setId($product->getId())
-            ->setImage($product->getImage())
-            ->setSlug($product->getSlug())
-            ->setTitle($product->getTitle())
-            ->setShortDescription($description);
-    }
 }

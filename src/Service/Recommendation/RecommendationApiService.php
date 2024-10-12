@@ -12,7 +12,7 @@ use Throwable;
 use App\Service\Recommendation\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
 
-class RecommendationService
+class RecommendationApiService
 {
     public function __construct(private HttpClientInterface $recommendationClient, private SerializerInterface $serializer)
     {

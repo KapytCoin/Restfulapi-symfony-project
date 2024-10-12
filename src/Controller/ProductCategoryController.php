@@ -22,7 +22,7 @@ class ProductCategoryController extends AbstractController
      *      @Model(type=ProductCategoryListResponse::class)
      * )
      */
-    #[Route('api/v1/product/categories', name: 'app_categories', methods: ['GET'])]
+    #[Route('/api/v1/product/categories', name: 'app_categories', methods: ['GET'])]
     public function categories(): Response
     {
         return $this->json($this->productCategoryService->getCategories());

@@ -6,12 +6,13 @@ use App\Model\Review as ReviewModel;
 use App\Entity\Review;
 use App\Model\ReviewPage;
 use App\Repository\ReviewRepository;
+use App\Repository\ReviewRepository\RatingService;
 
 class ReviewService
 {
     private const PAGE_LIMIT = 5;
 
-    public function __construct(private ReviewRepository $reviewRepository)
+    public function __construct(private ReviewRepository $reviewRepository, private RatingService $ratingService)
     {
     }
 
@@ -28,7 +29,7 @@ class ReviewService
         }
 
         return (new ReviewPage())
-            ->setRating($rating)
+            ->setRating($this->ratingService->calcReviewRatingForProduct($id, $total))
             ->setTotal($total)
             ->setPage($page)
             ->setPerPage(self::PAGE_LIMIT)

@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Exception\ProductNotFoundException;
+use App\Model\ProductMapper;
 use App\Repository\ProductRepository;
 use App\Repository\ProductCategoryRepository;
 use App\Model\ProductListResponse;
@@ -15,13 +16,15 @@ use App\Entity\ProductFormat;
 use App\Entity\ProductToProductFormat;
 use App\Model\ProductCategory as ProductCategoryModel;
 use App\Entity\ProductCategory;
+use App\Repository\ReviewRepository\RatingService;
 
 class ProductService
 {
     public function __construct(
     private ProductRepository $productRepository, 
     private ProductCategoryRepository $productCategoryRepository, 
-    private ReviewRepository $reviewRepository)
+    private ReviewRepository $reviewRepository,
+    private RatingService $ratingService)
     {
     }
 
@@ -32,7 +35,7 @@ class ProductService
         }
 
         return new ProductListResponse(array_map(
-            [$this, 'map'],
+            fn (Product $product) =>ProductMapper::map($product, new ProductListItem()),
             $this->productRepository->findProductsByCategoryId($categoryId)
         ));
     }
@@ -46,24 +49,14 @@ class ProductService
     {
         $product = $this->productRepository->getById($id);
         $reviews = $this->reviewRepository->countByProductId($id);
-        $rating = 0;
-
-        if ($reviews > 0) {
-            $rating = $this->reviewRepository->getProductTotalRatingSum($id) / $reviews;
-        }
 
         $categories = $product->getCategories()
             ->map(fn (ProductCategory $productCategory) => new ProductCategoryModel(
                 $productCategory->getId(), $productCategory->getTitle(), $productCategory->getSlug()
             ));
 
-        return (new ProductDetails())
-            ->setId($product->getId())
-            ->setTitle($product->getTitle())
-            ->setSlug($product->getSlug())
-            ->setImage($product->getImage())
-            ->setPublicationDate($product->getPublicationDate()->getTimestamp())
-            ->setRating($rating)
+        return ProductMapper::map($product, new ProductDetails())
+            ->setRating($this->ratingService->calcReviewRatingForProduct($id, $reviews))
             ->setReviews($reviews)
             ->setFormats($this->mapFormats($product->getFormats()))
             ->setCategories($categories->toArray());
@@ -79,15 +72,5 @@ class ProductService
             ->setPrice($formatJoin->getPrice())
             ->setDiscountPercent($formatJoin->getDiscountPercent())
         )->toArray();        
-    }
-
-    private function map(Product $product): ProductListItem
-    {
-        return (new ProductListItem())
-            ->setId($product->getId())
-            ->setTitle($product->getTitle())
-            ->setSlug($product->getSlug())
-            ->setImage($product->getImage())
-            ->setPublicationDate($product->getPublicationDate()->getTimestamp());
     }
 }

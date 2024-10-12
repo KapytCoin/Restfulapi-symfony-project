@@ -25,7 +25,7 @@ class ProductController extends AbstractController
      *      @Model(type=ErrorResponse::class)
      * )
      */
-    #[Route('api/v1/product/{id}', name: 'app_productByCategory', methods: ['GET'])]
+    #[Route('/api/v1/product/{id}', name: 'app_productByCategory', methods: ['GET'])]
     public function productById(int $id): Response
     {
         return $this->json($this->productService->getProductById($id));

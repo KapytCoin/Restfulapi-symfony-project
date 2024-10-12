@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Exception\ProductNotFoundException;
-use App\Model\ProductMapper;
+use App\Mapper\ProductMapper;
 use App\Repository\ProductRepository;
 use App\Repository\ProductCategoryRepository;
 use App\Model\ProductListResponse;
@@ -16,7 +16,7 @@ use App\Entity\ProductFormat;
 use App\Entity\ProductToProductFormat;
 use App\Model\ProductCategory as ProductCategoryModel;
 use App\Entity\ProductCategory;
-use App\Repository\ReviewRepository\RatingService;
+use App\Service\RatingService;
 
 class ProductService
 {

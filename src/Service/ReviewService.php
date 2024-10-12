@@ -6,7 +6,7 @@ use App\Model\Review as ReviewModel;
 use App\Entity\Review;
 use App\Model\ReviewPage;
 use App\Repository\ReviewRepository;
-use App\Repository\ReviewRepository\RatingService;
+use App\Service\RatingService;
 
 class ReviewService
 {

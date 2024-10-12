@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Repository\ReviewRepository;
+namespace App\Service;
+
 use App\Repository\ReviewRepository;
 
 class RatingService

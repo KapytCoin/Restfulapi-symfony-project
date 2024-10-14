@@ -18,6 +18,6 @@ class AuthController extends AbstractController
     #[Route('/api/v1/auth/signUp', methods: ['POST'])]
     public function signUp(#[RequestBody] SignUpRequest $signUpRequest): Response
     {
-        return $this->json($this->signUpService->signUp($signUpRequest));
+        return $this->signUpService->signUp($signUpRequest);
     }
 }

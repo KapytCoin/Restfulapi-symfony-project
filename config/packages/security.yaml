@@ -28,6 +28,8 @@ security:
                 check_path: api_refresh_token
             
     access_control:
+        - { path: ^/api/v1/admin, roles: ROLE_ADMIN }
+        - { path: ^/api/v1/editor, roles: ROLE_EDITOR }
         - { path: ^/api/v1/user, roles: ROLE_USER }
         - { path: ^/api, roles: PUBLIC_ACCESS }
 

@@ -16,8 +16,6 @@ use App\Entity\ProductToProductFormat;
 use App\Model\ProductCategory as ProductCategoryModel;
 use App\Entity\ProductCategory;
 use App\Service\RatingService;
-use App\Service\Recommendation\Model\RecommendationItem;
-use Exception;
 
 class ProductService
 {
@@ -36,7 +34,7 @@ class ProductService
 
         return new ProductListResponse(array_map(
             fn (Product $product) =>ProductMapper::map($product, new ProductListItem()),
-            $this->productRepository->findProductsByCategoryId($categoryId)
+            $this->productRepository->findPublishedProductsByCategoryId($categoryId)
         ));
     }
 
@@ -47,7 +45,7 @@ class ProductService
 
     public function getProductById(int $id): ProductDetails
     {
-        $product = $this->productRepository->getById($id);
+        $product = $this->productRepository->getPublishedById($id);
 
         $categories = $product->getCategories()
             ->map(fn (ProductCategory $productCategory) => new ProductCategoryModel(

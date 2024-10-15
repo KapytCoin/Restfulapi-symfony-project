@@ -21,17 +21,20 @@ class ProductRepository extends ServiceEntityRepository
      * @param int $id
      * @return Product[]
      */
-    public function findProductsByCategoryId(int $id): array
+    public function findPublishedProductsByCategoryId(int $id): array
     {
-        $query = $this->getEntityManager()->createQuery('SELECT p FROM App\Entity\Product p WHERE :categoryId MEMBER OF p.categories');
-        $query->setParameter("categoryId", $id);
-
-        return $query->getResult();
+        return $this->getEntityManager()
+        ->createQuery('SELECT p FROM App\Entity\Product p WHERE :categoryId MEMBER OF p.categories AND p.publicationDate IS NOT NULL')
+        ->setParameter('id', $id)
+        ->getResult();
     }
 
-    public function getById(int $id): Product
+    public function getPublishedById(int $id): Product
     {
-        $product = $this->find($id);
+        $product = $this->getEntityManager()->createQuery('SELECT p FROM App\Entity\Product p WHERE p.id = :id AND p.publicationDate IS NOT NULL')
+        ->setParameter('id', $id)
+        ->getOneOrNullResult();
+
         if (null === $product) {
             throw new ProductNotFoundException();
         }
@@ -41,6 +44,8 @@ class ProductRepository extends ServiceEntityRepository
 
     public function findProductsByIds(array $ids): array
     {
-        return $this->fendBy(['id => $ids']);
+        return $this->getEntityManager()->createQuery('SELECT p FROM App\Entity\Product p WHERE p.id IN (:ids) AND p.publicationDate IS NOT NULL')
+            ->setParameter('ids', $ids)
+            ->getResult();
     }
 }

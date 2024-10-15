@@ -6,6 +6,7 @@ use App\Entity\Product;
 use App\Exception\ProductNotFoundException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<Product>
@@ -47,5 +48,25 @@ class ProductRepository extends ServiceEntityRepository
         return $this->getEntityManager()->createQuery('SELECT p FROM App\Entity\Product p WHERE p.id IN (:ids) AND p.publicationDate IS NOT NULL')
             ->setParameter('ids', $ids)
             ->getResult();
+    }
+
+    public function findUserProducts(UserInterface $user): array
+    {
+        return $this->findBy(['user' => $user]);
+    }
+
+    public function getUserProductById(int $id, UserInterface $user): Product
+    {
+        $product = $this->findOneBy(['id' => $id, 'user' => $user]);
+        if (null === $product) {
+            throw new ProductNotFoundException();
+        }
+
+        return $product;
+    }
+
+    public function existsBySlug(string $slug): bool
+    {
+        return null !== $this->findOneBy(['slug' => $slug]);
     }
 }

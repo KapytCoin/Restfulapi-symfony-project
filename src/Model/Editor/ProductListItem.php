@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Author;
+namespace App\Model\Editor;
 
 class ProductListItem
 {

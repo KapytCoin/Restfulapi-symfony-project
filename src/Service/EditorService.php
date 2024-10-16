@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Model\Editor\CreateProductRequest;
 use App\Model\Editor\ProductListItem;
 use App\Model\Editor\ProductListResponse;
+use App\Model\IdResponse;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -30,7 +31,7 @@ class EditorService
         );
     }
 
-    public function createProduct(CreateProductRequest $request): void
+    public function createProduct(CreateProductRequest $request): IdResponse
     {
         $slug = $this->slugger->slug($request->getTitle());
         if ($this->productRepository->existsBySlug($slug)) {
@@ -43,6 +44,8 @@ class EditorService
 
         $this->em->persist($product);
         $this->em->flush();
+
+        return new IdResponse($product->getId());
     }
 
     public function deleteProduct(int $id): void

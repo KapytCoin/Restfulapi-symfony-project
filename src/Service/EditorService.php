@@ -12,6 +12,8 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Entity\Product;
 use App\Exception\ProductAlreadyExistsException;
+use DateTimeInterface;
+use App\Model\PublishProductRequest;
 
 class EditorService
 {
@@ -29,6 +31,16 @@ class EditorService
             array_map([$this, 'map'], 
             $this->productRepository->findUserProducts($this->security->getUser()))
         );
+    }
+
+    public function publish(int $id, PublishProductRequest $publishProductRequest): void
+    {
+        $this->setPublicationDate($id, $publishProductRequest->getDate());
+    }
+
+    public function unpublish(int $id): void
+    {
+        $this->setPublicationDate($id, null);
     }
 
     public function createProduct(CreateProductRequest $request): IdResponse
@@ -63,5 +75,13 @@ class EditorService
             ->setSlug($product->getSlug())
             ->setImage($product->getImage())
             ->setTitle($product->getTitle());
+    }
+
+    private function setPublicationDate(int $id, ?DateTimeInterface $dateTime): void
+    {
+        $product = $this->productRepository->getUserProductById($id, $this->security->getUser());
+        $product->setPublicationDate($dateTime);
+
+        $this->em->flush();
     }
 }

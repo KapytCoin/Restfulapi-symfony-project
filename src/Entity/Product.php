@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
@@ -48,6 +49,10 @@ class Product
      */
     #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'product')]
     private Collection $reviews;
+
+    #[ORM\ManyToOne(inversedBy: 'products', targetEntity: Users::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?UserInterface $users = null;
 
     public function __construct()
     {
@@ -183,6 +188,18 @@ class Product
     public function setFormats(Collection $formats): static
     {
         $this->formats = $formats;
+
+        return $this;
+    }
+
+    public function getUsers(): ?UserInterface
+    {
+        return $this->users;
+    }
+
+    public function setUsers(?UserInterface $users): static
+    {
+        $this->users = $users;
 
         return $this;
     }

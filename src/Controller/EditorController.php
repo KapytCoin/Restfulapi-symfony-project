@@ -11,11 +11,24 @@ use App\Model\Editor\CreateProductRequest;
 use Symfony\Component\HttpFoundation\Request;
 use App\Model\ProductListResponse;
 use App\Model\PublishProductRequest;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use App\Attribute\RequestFile;
 
 class EditorController extends AbstractController
 {
     public function __construct(private EditorService $editorService)
     {
+    }
+
+    #[Route(path: '/api/v1/editor/product/{id}/uploadImage', methods: ['POST'])]
+    public function uploadImage(
+        int $id,
+        #[RequestFile(field: 'cover', constraints: [
+            new NotNull(),
+            new Image(maxSize: '1M', mimeTypes: ['image/jpeg', 'image/png', 'image/jpg']),
+        ])] UploadedFile $file
+    ): Response {
+        return $this->json($this->editorService->uploadImage($id, $file));
     }
 
     #[Route(path: '/api/v1/editor/products', methods: ['GET'])]

@@ -1,2 +1,2 @@
-# first_restfullapi_store
+# restfulapi_store
 created according to the guide

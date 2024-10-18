@@ -52,4 +52,4 @@ services:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created }
 
     App\Service\UploadService:
-        arguments: ['%uploadDir%']
+        arguments: ['@filesystem', '%uploadDir%']

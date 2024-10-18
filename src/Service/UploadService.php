@@ -22,7 +22,7 @@ class UploadService
         }
 
         $unigueName = Uuid::v4()->toRfc4122().'.'.$extension;
-        $uploadPath = $this->uploadDir.DIRECTORY_SEPARATOR.'product'.$productId;
+        $uploadPath = $this->uploadDir.DIRECTORY_SEPARATOR.'product'.DIRECTORY_SEPARATOR.$productId;
 
         $file->move($uploadPath, $unigueName);
 

@@ -39,6 +39,10 @@ class EditorService
     public function uploadImage(int $id, UploadedFile $file): UploadImageResponse
     {
         $product = $this->productRepository->getUserProductById($id, $this->security->getUser());
+        if (null !== $product->getImage()) {
+            $this->uploadService->deleteProductFile($product->getId(), basename($product->getImage()));
+        }
+
         $link = $this->uploadService->uploadProductFile($id, $file);
 
         $product->setImage($link);
@@ -75,7 +79,7 @@ class EditorService
         return new IdResponse($product->getId());
     }
 
-    public function deleteProduct(int $id): void
+    public function deleteProductFile(int $id): void
     {
         $product = $this->productRepository->getUserProductById($id, $this->security->getUser());
 

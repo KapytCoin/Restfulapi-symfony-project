@@ -13,6 +13,7 @@ use App\Model\ProductListResponse;
 use App\Model\PublishProductRequest;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Attribute\RequestFile;
+use App\Model\UploadImageResponse;
 
 class EditorController extends AbstractController
 {

@@ -36,31 +36,21 @@ class EditorService
         );
     }
 
-    public function uploadImage(int $id, UploadedFile $file): UploadImageResponse
-    {
-        $product = $this->productRepository->getUserProductById($id, $this->security->getUser());
-        if (null !== $product->getImage()) {
-            $this->uploadService->deleteProductFile($product->getId(), basename($product->getImage()));
-        }
+    // public function uploadImage(int $id, UploadedFile $file): UploadImageResponse
+    // {
+    //     $product = $this->productRepository->getUserProductById($id, $this->security->getUser());
+    //     if (null !== $product->getImage()) {
+    //         $this->uploadService->deleteProductFile($product->getId(), basename($product->getImage()));
+    //     }
 
-        $link = $this->uploadService->uploadProductFile($id, $file);
+    //     $link = $this->uploadService->uploadProductFile($id, $file);
 
-        $product->setImage($link);
+    //     $product->setImage($link);
 
-        $this->em->flush();
+    //     $this->em->flush();
 
-        return new UploadImageResponse($link);
-    }
-
-    public function publish(int $id, PublishProductRequest $publishProductRequest): void
-    {
-        $this->setPublicationDate($id, $publishProductRequest->getDate());
-    }
-
-    public function unpublish(int $id): void
-    {
-        $this->setPublicationDate($id, null);
-    }
+    //     return new UploadImageResponse($link);
+    // }
 
     public function createProduct(CreateProductRequest $request): IdResponse
     {
@@ -94,13 +84,5 @@ class EditorService
             ->setSlug($product->getSlug())
             ->setImage($product->getImage())
             ->setTitle($product->getTitle());
-    }
-
-    private function setPublicationDate(int $id, ?DateTimeInterface $dateTime): void
-    {
-        $product = $this->productRepository->getUserProductById($id, $this->security->getUser());
-        $product->setPublicationDate($dateTime);
-
-        $this->em->flush();
     }
 }

@@ -2,22 +2,20 @@
 
 namespace App\Controller;
 
+use App\Service\ProductPublishService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\EditorService;
 use App\Attribute\RequestBody;
 use App\Model\Editor\CreateProductRequest;
-use Symfony\Component\HttpFoundation\Request;
-use App\Model\ProductListResponse;
 use App\Model\PublishProductRequest;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Attribute\RequestFile;
-use App\Model\UploadImageResponse;
 
 class EditorController extends AbstractController
 {
-    public function __construct(private EditorService $editorService)
+    public function __construct(private EditorService $editorService, private ProductPublishService $productPublishService)
     {
     }
 
@@ -41,7 +39,7 @@ class EditorController extends AbstractController
     #[Route(path: '/api/v1/editor/product/{id}/publish', methods: ['POST'])]
     public function publish(int $id, #[RequestBody] PublishProductRequest $request): Response
     {
-        $this->editorService->publish($id, $request);
+        $this->productPublishService->publish($id, $request);
 
         return $this->json(null);
     }
@@ -49,7 +47,7 @@ class EditorController extends AbstractController
     #[Route(path: '/api/v1/editor/product/{id}/unpublish', methods: ['POST'])]
     public function unpublish(int $id): Response
     {
-        $this->editorService->unpublish($id);
+        $this->productPublishService->unpublish($id);
 
         return $this->json(null);
     }
@@ -60,11 +58,11 @@ class EditorController extends AbstractController
         return $this->json($this->editorService->createProduct($request));
     }
 
-    #[Route(path: '/api/v1/editor/product/{id}', methods: ['DELETE'])]
-    public function deleteProudct(int $id): Response
-    {
-        $this->editorService->deleteProduct($id);
+    // #[Route(path: '/api/v1/editor/product/{id}', methods: ['DELETE'])]
+    // public function deleteProudct(int $id): Response
+    // {
+    //     $this->editorService->deleteProduct($id);
 
-        return $this->json(null);
-    }
+    //     return $this->json(null);
+    // }
 }
